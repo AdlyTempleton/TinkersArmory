@@ -5,7 +5,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import pixlepix.tarmory.item.ItemAuraCrystal;
 import pixlepix.tarmory.main.ConstantMod;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ModCreativeTab extends CreativeTabs {
 
     @Override
     public ItemStack getIconItemStack() {
-        return new ItemStack(BlockRegistry.getFirstItemFromClass(ItemAuraCrystal.class));
+        return new ItemStack(Items.chainmail_chestplate);
     }
 
     @Override

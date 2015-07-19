@@ -10,17 +10,23 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidStack;
 import pixlepix.tarmory.TArmory;
 import pixlepix.tarmory.data.CoordTuple;
-import pixlepix.tarmory.data.recipe.ProcessorRecipeRegistry;
-import pixlepix.tarmory.data.recipe.PylonRecipeRegistry;
+import pixlepix.tarmory.item.MetalPatternArmor;
 import pixlepix.tarmory.main.event.EventHandler;
 import pixlepix.tarmory.network.PacketBurst;
 import pixlepix.tarmory.registry.BlockRegistry;
 import pixlepix.tarmory.registry.ModCreativeTab;
+import tconstruct.TConstruct;
+import tconstruct.library.TConstructRegistry;
+import tconstruct.smeltery.TinkerSmeltery;
+import tconstruct.tools.TinkerTools;
 
 public class CommonProxy {
 
@@ -54,8 +60,6 @@ public class CommonProxy {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(TArmory.instance, new GuiHandler());
 
-        PylonRecipeRegistry.init();
-        ProcessorRecipeRegistry.init();
         eventHandler = new EventHandler();
         MinecraftForge.EVENT_BUS.register(eventHandler);
         FMLCommonHandler.instance().bus().register(eventHandler);
@@ -63,9 +67,14 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event) {
         registry.postInit();
-    }
 
-    public void setLexiconStack(ItemStack stack) {
+        Item armorCast = BlockRegistry.getFirstItemFromClass(MetalPatternArmor.class);
+        for (FluidStack stack : new FluidStack[]{new FluidStack(TinkerSmeltery.moltenAlubrassFluid, TConstruct.ingotLiquidValue), new FluidStack(TinkerSmeltery.moltenGoldFluid, TConstruct.ingotLiquidValue * 2)}){
+            TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(armorCast), stack, new ItemStack(Items.iron_helmet), false, 50);
+            TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(armorCast, 1, 1), stack, new ItemStack(Items.iron_chestplate), false, 50);
+            TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(armorCast, 1, 2), stack, new ItemStack(Items.iron_leggings), false, 50);
+            TConstructRegistry.getTableCasting().addCastingRecipe(new ItemStack(armorCast, 1, 3), stack, new ItemStack(Items.iron_boots), false, 50);
+        }
     }
 
     public void addBlockDestroyEffects(CoordTuple tuple) {
