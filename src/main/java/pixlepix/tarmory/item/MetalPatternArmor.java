@@ -1,8 +1,13 @@
 package pixlepix.tarmory.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.fluids.FluidStack;
 import pixlepix.tarmory.registry.ITTinkererItem;
 import pixlepix.tarmory.registry.ThaumicTinkererRecipe;
@@ -20,8 +25,9 @@ import java.util.List;
  */
 public class MetalPatternArmor extends MetalPattern implements ITTinkererItem{
     public MetalPatternArmor() {
-        super("armorCast", "");
+        super("armorCast", "materials/");
 
+        textureNames = new String[]{"armorcast_helmet", "armorcast_chestplate", "armorcast_leggings", "armorcast_boots"};
     }
 
     @Override
