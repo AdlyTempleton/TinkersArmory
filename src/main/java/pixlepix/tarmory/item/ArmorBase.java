@@ -1,9 +1,14 @@
 package pixlepix.tarmory.item;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import pixlepix.tarmory.data.ArmorMaterialData;
 import pixlepix.tarmory.registry.BlockRegistry;
 import pixlepix.tarmory.registry.ITTinkererItem;
 import pixlepix.tarmory.registry.ThaumicTinkererRecipe;
@@ -38,8 +43,43 @@ public class ArmorBase extends ArmorCore implements ITTinkererItem {
         return null;
     }
 
+    @Override
+    public double getProtection(NBTTagCompound tags) {
+        return 0D;
+    }
+
     public ArmorBase(int baseProtection, ArmorPart part, String type, String textureFolder, String textureName) {
         super(baseProtection, part, type, textureFolder, textureName);
+    }
+
+    /**
+     * Determines if the durability bar should be rendered for this item.
+     * Defaults to vanilla stack.isDamaged behavior.
+     * But modders can use this for any data they wish.
+     *
+     * @param stack The current Item Stack
+     * @return True if it should render the 'durability' bar.
+     */
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
+    }
+
+    /**
+     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
+     * update it's contents.
+     *
+     * @param stack
+     * @param p_77663_2_
+     * @param p_77663_3_
+     * @param p_77663_4_
+     * @param p_77663_5_
+     */
+    @Override
+    public void onUpdate(ItemStack stack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+        if(stack.stackTagCompound == null) {
+            stack.stackTagCompound = new NBTTagCompound();
+        }
     }
 
     public ArmorBase(){
@@ -103,12 +143,17 @@ public class ArmorBase extends ArmorCore implements ITTinkererItem {
         return 0;
     }
 
-    public int getMaterialID (ItemStack stack)
+    public static int getMaterialID (ItemStack stack)
     {
         if (TConstructRegistry.toolMaterials.keySet().contains(stack.getItemDamage()))
             return stack.getItemDamage();
 
         return -1;
+    }
+    
+    public static ArmorMaterialData.ArmorMaterial getArmorMaterial(ItemStack stack){
+        return ArmorMaterialData.getArmorProperties(TConstructRegistry.getMaterial(getMaterialID(stack)));
+        
     }
 
     @Override

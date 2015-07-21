@@ -18,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import pixlepix.tarmory.TArmory;
+import pixlepix.tarmory.data.ArmorMaterialData;
 import pixlepix.tarmory.data.CoordTuple;
 import pixlepix.tarmory.item.ArmorBase;
 import pixlepix.tarmory.item.MetalPatternArmor;
@@ -63,6 +64,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         registry.init();
+        ArmorMaterialData.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(TArmory.instance, new GuiHandler());
 
